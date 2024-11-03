@@ -991,7 +991,10 @@ class TSForecastingExperiment(_TSSupervisedExperiment, TSForecastingPreprocessor
         if self.fold_strategy in possible_time_series_fold_strategies:
             self.fold_generator = self.get_fold_generator(fold=self.fold)
             # Number of folds
-            self.fold_param = self.fold_generator.get_n_splits(y=self.y_train)
+            self.fold_param = (
+            self.fold_generator.get_n_splits(y=self.y_train)
+            if hasattr(self.fold_generator, 'get_n_splits') else None  
+            )
         else:
             self.fold_generator = self.fold_strategy
             # Number of folds
